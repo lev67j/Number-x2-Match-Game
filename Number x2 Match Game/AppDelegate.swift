@@ -8,32 +8,35 @@
 import UIKit
 import CoreData
 
+import UIKit
+import CoreData
+
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Создаем окно
         window = UIWindow(frame: UIScreen.main.bounds)
         
-        // Создаем GameViewController
         let gameViewController = GameViewController()
-        
-        // Передаем контекст Core Data
         gameViewController.managedObjectContext = persistentContainer.viewContext
         
-        // Устанавливаем корневой контроллер
         window?.rootViewController = gameViewController
         window?.makeKeyAndVisible()
         
         return true
     }
     
+    // Сохранение при выходе из приложения
+    func applicationWillResignActive(_ application: UIApplication) {
+        saveContext()
+    }
+    
     // MARK: - Core Data stack
     
     lazy var persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "GameModel") // Укажите имя вашей модели
+        let container = NSPersistentContainer(name: "GameModel")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
